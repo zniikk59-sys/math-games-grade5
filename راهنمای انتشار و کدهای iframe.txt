@@ -1,0 +1,35 @@
+بسته آماده انتشار اینترنتی بازی‌های آموزشی ریاضی پنجم
+
+محتویات:
+- index.html: صفحه معرفی چهار بازی
+- games/number-pattern/index.html: ماجراجویی الگویابی
+- games/composite-numbers-space/index.html: سفر فضایی اعداد مرکب
+- games/billions/index.html: بازی میلیارد
+- games/number-machine/index.html: ماشین عددنویس
+
+روش انتشار رایگان با Render Static Site:
+1) این ZIP را از حالت فشرده خارج کنید.
+2) پوشه Student_Games_Free_Hosting را در یک مخزن GitHub بارگذاری کنید.
+3) در Render یک Static Site جدید بسازید و مخزن را متصل کنید.
+4) Build Command را خالی بگذارید و Publish Directory را روی . قرار دهید.
+5) پس از Deploy، Render یک نشانی HTTPS با دامنه onrender.com می‌دهد.
+6) نشانی نهایی را در نشانی‌های iframe زیر جایگزین کنید.
+
+مسیرهای صفحات پس از انتشار:
+صفحه اصلی: /
+ماجراجویی الگویابی: /games/number-pattern/
+سفر فضایی اعداد مرکب: /games/composite-numbers-space/
+بازی میلیارد: /games/billions/
+ماشین عددنویس: /games/number-machine/
+
+نمونه کد iframe (به جای YOUR-SITE.onrender.com دامنه واقعی Render را قرار دهید):
+<iframe src="https://YOUR-SITE.onrender.com/games/number-pattern/" width="100%" height="750" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+<iframe src="https://YOUR-SITE.onrender.com/games/composite-numbers-space/" width="100%" height="750" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+<iframe src="https://YOUR-SITE.onrender.com/games/billions/" width="100%" height="750" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+<iframe src="https://YOUR-SITE.onrender.com/games/number-machine/" width="100%" height="750" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+
+توجه مهم:
+- این بسته آماده انتشار است اما هنوز روی اینترنت منتشر نشده؛ بنابراین هنوز لینک عمومی واقعی ساخته نشده است.
+- برای ساخت لینک واقعی، اتصال حساب GitHub و Render و انجام Deploy لازم است. این بسته به‌تنهایی لینک عمومی ایجاد نمی‌کند.
+- بازی‌ها فایل‌های HTML مستقل‌اند. فونت Vazirmatn در بعضی صفحات از Google Fonts بارگیری می‌شود؛ در صورت قطع اینترنت ممکن است فونت جایگزین نمایش داده شود، اما خود بازی‌ها محلی و بدون بک‌اند هستند.
+- اگر سامانه دانش‌آموزی فقط URL صفحه را می‌پذیرد، از مقدار src هر iframe استفاده کنید؛ اگر کد HTML می‌خواهد، کل تگ iframe را وارد کنید.

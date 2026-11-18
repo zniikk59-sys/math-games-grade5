@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سفر فضایی اعداد مرکب</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#cfefff;--card:#fff;--ink:#1b2a5e;--sub:#4a5a8f;--line:#1b2a5e;--shd:#1b2a5e;--yel:#ffd23f;--cor:#ff6b6b;--mint:#3ddc97;--sky:#8fd3ff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101c44;--card:#1d2d63;--ink:#eef2ff;--sub:#b7c3ee;--line:#c9d4ff;--shd:#070d24;--sky:#35508f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101c44;--card:#1d2d63;--ink:#eef2ff;--sub:#b7c3ee;--line:#c9d4ff;--shd:#070d24;--sky:#35508f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Vazirmatn',Tahoma,system-ui,sans-serif;line-height:1.8}
+[hidden]{display:none!important}
+.wrap{max-width:640px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;box-shadow:0 6px 0 var(--shd);padding:20px;margin-bottom:18px}
+h1{font-size:clamp(1.9rem,8vw,2.9rem);font-weight:900;line-height:1.3;margin:.1em 0 .2em}
+h2{font-size:1.6rem;margin:.2em 0}
+p{margin:.4em 0}
+.sub{color:var(--sub)}
+.big{font-size:3.4rem;line-height:1.2}
+.teacher{display:inline-block;background:var(--yel);color:#1b2a5e;border:3px solid var(--line);border-radius:999px;padding:2px 16px;font-weight:700;margin-top:6px}
+.btn{font:inherit;font-weight:700;font-size:1.1rem;border:3px solid var(--line);border-radius:14px;padding:10px 20px;background:var(--yel);color:#1b2a5e;box-shadow:0 5px 0 var(--shd);cursor:pointer}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--shd)}
+.btn:disabled{cursor:default}
+:focus-visible,.chip input:focus-visible+span{outline:4px solid var(--cor);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 18px}
+.chip input{position:absolute;opacity:0}
+.chip span{display:inline-block;border:3px solid var(--line);border-radius:999px;padding:4px 16px;cursor:pointer;background:var(--card);font-weight:700}
+.chip input:checked+span{background:var(--mint);color:#1b2a5e}
+.hud{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1.1rem;gap:8px}
+.track{position:relative;height:46px;margin:8px 0 14px;direction:rtl}
+.line{position:absolute;top:20px;inset-inline:22px;height:8px;border-radius:4px;background:var(--sky);border:2px solid var(--line)}
+.rocket{position:absolute;top:2px;right:calc(var(--p,0)*(100% - 44px));width:44px;text-align:center;font-size:28px;transform:scaleX(-1);transition:right .6s ease}
+.planet{position:absolute;top:2px;left:0;width:44px;text-align:center;font-size:30px}
+.badge{display:inline-block;background:var(--sky);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:0 14px;font-weight:700;font-size:.95rem}
+#qtext{font-size:1.45rem;font-weight:700;line-height:1.7;margin:10px 0 16px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{background:var(--card);color:var(--ink);font-size:1.15rem;padding:12px 8px}
+.opt.ok{background:var(--mint);color:#1b2a5e}
+.opt.no{background:var(--cor);color:#1b2a5e}
+.fb{border:3px dashed var(--line);border-radius:16px;padding:10px 14px;margin:16px 0 12px}
+.stars{font-size:2.6rem;letter-spacing:4px}
+.pf{position:fixed;pointer-events:none;font-size:26px;animation:fly 1s forwards}
+@keyframes fly{to{transform:translateY(-130px) rotate(40deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pf{display:none}.rocket{transition:none}}
+footer{text-align:center;font-size:.95rem;color:var(--sub);padding:4px 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start" class="card" style="text-align:center">
+  <div class="big">🚀🪐</div>
+  <h1>سفر فضایی اعداد مرکب</h1>
+  <p>موشک را با حل مسئله‌های زمان، طول، وزن و حجم به سیاره‌ی ریاضی برسان. ۱۰ سؤال داری و ۳ جان!</p>
+  <div class="teacher">آموزگار: سمیه مهری</div>
+  <p class="sub" style="margin-top:18px">کدام موضوع را می‌خواهی؟</p>
+  <div class="chips" id="chips" style="justify-content:center"></div>
+  <button class="btn" id="go">شروع پرواز</button>
+</section>
+
+<section id="play" hidden>
+  <div class="card">
+    <div style="text-align:center;margin-bottom:8px"><span class="teacher" style="margin:0">آموزگار: سمیه مهری</span></div>
+    <div class="hud"><span id="hearts" aria-label="جان‌ها"></span><span id="qnum"></span><span id="score"></span></div>
+    <div class="track" aria-hidden="true"><div class="line"></div><div class="planet">🪐</div><div class="rocket" id="rocket">🚀</div></div>
+    <span class="badge" id="qtopic"></span>
+    <div id="qtext"></div>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb" role="status" aria-live="polite" hidden></div>
+    <button class="btn" id="next" hidden></button>
+  </div>
+</section>
+
+<section id="end" class="card" hidden style="text-align:center">
+  <div class="big" id="eemoji"></div>
+  <h2 id="etitle"></h2>
+  <div class="stars" id="estars" aria-hidden="true"></div>
+  <p id="emsg"></p>
+  <p class="sub" id="estat"></p>
+  <p>با آرزوی موفقیت از طرف آموزگارت</p>
+  <div class="teacher">آموزگار: سمیه مهری</div>
+  <p style="margin-top:20px"><button class="btn" id="again">پرواز دوباره</button></p>
+</section>
+
+<footer>بازی ریاضی پنجم · آموزگار: سمیه مهری</footer>
+</div>
+
+<script>
+const N=10,$=id=>document.getElementById(id),fa=n=>Number(n).toLocaleString('fa-IR');
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[rnd(0,a.length-1)],shuf=a=>a.sort(()=>Math.random()-.5);
+const U={time:[['ساعت','دقیقه',60],['دقیقه','ثانیه',60]],length:[['متر','سانتی‌متر',100],['کیلومتر','متر',1000]],weight:[['کیلوگرم','گرم',1000]],volume:[['لیتر','میلی‌لیتر',1000]]};
+const NM={time:'⏰ زمان',length:'📏 طول',weight:'⚖️ وزن',volume:'🧪 حجم'};
+const TP={add:{time:'تمرین ورزشی {x} و بازی {y} طول کشید. روی‌هم چقدر وقت گذشت؟',length:'نوار اول {x} و نوار دوم {y} است. اگر آن‌ها را به هم وصل کنیم، طولشان چقدر می‌شود؟',weight:'کیسه‌ی برنج {x} و کیسه‌ی عدس {y} وزن دارد. وزن هر دو با هم چقدر است؟',volume:'در بطری اول {x} و در بطری دوم {y} آب است. روی‌هم چقدر آب دارند؟'},
+sub:{time:'یک برنامه‌ی تلویزیونی {x} است و {y} از آن گذشته. چقدر مانده است؟',length:'طناب {x} بود و {y} از آن بریدیم. چقدر طناب ماند؟',weight:'جعبه‌ای {x} وزن داشت. {y} از میوه‌هایش را برداشتند. وزن جعبه چقدر شد؟',volume:'مخزن {x} آب داشت و {y} مصرف شد. چقدر آب ماند؟'}};
+function fmt(a,b,p){if(a<0||b<0||(!a&&!b))return null;if(!a)return fa(b)+' '+p[1];if(!b)return fa(a)+' '+p[0];return fa(a)+' '+p[0]+' و '+fa(b)+' '+p[1]}
+function makeQ(tp){
+  const t=pick(tp),p=pick(U[t]),f=p[2],st=(f==60||f==100)?5:50,rb=()=>st*rnd(1,f/st-1),ty=pick([0,1,2,2,3,3]);
+  let text,ex,right,wr,fill,A,B,wa;
+  const L=(a,b)=>fmt(a,b,p);
+  if(ty==0){
+    const a=rnd(1,9),b=rb(),n=a*f+b,M=x=>x>0?fa(x)+' '+p[1]:null;
+    text=fmt(a,b,p)+' را به '+p[1]+' تبدیل کن.';
+    ex=fa(a)+' '+p[0]+' = '+fa(a*f)+' '+p[1]+'، با '+fa(b)+' '+p[1]+' می‌شود '+fa(n)+' '+p[1]+'.';
+    right=M(n);wr=[M(a*10+b),M(a+b),M(a*f),M(n-st),M(n+st)];fill=()=>M(n+st*rnd(-6,6));
+  }else{
+    if(ty==1){
+      const a=rnd(1,9),b=rb(),n=a*f+b;A=a;B=b;
+      text=fa(n)+' '+p[1]+' برابر است با چند '+p[0]+' و چند '+p[1]+'؟';
+      ex=fa(n)+' را بر '+fa(f)+' تقسیم می‌کنیم: خارج‌قسمت '+fa(a)+' و باقی‌مانده '+fa(b)+'.';
+      wa=[[a+1,b],[a-1,b],[a,b+st],[a,b-st]];
+    }else if(ty==2){
+      const a1=rnd(1,8),a2=rnd(1,8),b1=rb(),b2=rb(),t=(a1+a2)*f+b1+b2;A=Math.floor(t/f);B=t%f;
+      text=TP.add[t0()].replace('{x}',fmt(a1,b1,p)).replace('{y}',fmt(a2,b2,p));
+      ex=(b1+b2>=f)?fa(b1+b2)+' '+p[1]+' بیشتر از '+fa(f)+' است؛ یک '+p[0]+' می‌شود و '+fa(B)+' '+p[1]+' می‌ماند.':'واحدهای هم‌نام را با هم جمع می‌کنیم.';
+      wa=[[a1+a2,b1+b2],[A+1,B],[A,B+st],[A-1,B]];
+    }else{
+      const a1=rnd(2,9),a2=rnd(1,a1-1),b1=rb(),b2=rb(),t=(a1*f+b1)-(a2*f+b2);A=Math.floor(t/f);B=t%f;
+      text=TP.sub[t0()].replace('{x}',fmt(a1,b1,p)).replace('{y}',fmt(a2,b2,p));
+      ex=(b1<b2)?fa(b1)+' از '+fa(b2)+' کمتر است؛ یک '+p[0]+' را باز می‌کنیم و '+fa(f)+' '+p[1]+' به '+p[1]+'‌ها اضافه می‌شود.':'واحدهای هم‌نام را از هم کم می‌کنیم.';
+      wa=[[a1-a2,Math.abs(b1-b2)],[A+1,B],[A-1,B],[A,B+st]];
+    }
+    function t0(){return t}
+    right=L(A,B);wr=wa.map(x=>L(x[0],x[1]));
+    fill=()=>{const bb=B+st*rnd(-3,3);return(bb<0||bb>=f)?null:L(A+rnd(-2,2),bb)};
+  }
+  const s=new Set();wr.forEach(w=>{if(w&&w!==right)s.add(w)});
+  let g=0;while(s.size<3&&g++<80){const w=fill();if(w&&w!==right)s.add(w)}
+  const hint='یادآوری: هر '+p[0]+' برابر '+fa(f)+' '+p[1]+' است. ';
+  return{topic:t,text,right,opts:shuf([right,...shuf([...s]).slice(0,3)]),ex:hint+ex};
+}
+const S={};
+(function(){const c=$('chips');[['all','🌟 همه‌چیز'],['time','⏰ زمان'],['length','📏 طول'],['weight','⚖️ وزن'],['volume','🧪 حجم']].forEach((x,i)=>{const l=document.createElement('label');l.className='chip';l.innerHTML='<input type="radio" name="t" value="'+x[0]+'"'+(i?'':' checked')+'><span>'+x[1]+'</span>';c.append(l)})})();
+function show(id){['start','play','end'].forEach(s=>$(s).hidden=s!==id);window.scrollTo(0,0)}
+function hud(){$('hearts').textContent='❤️'.repeat(S.lives)+'🤍'.repeat(3-S.lives);$('score').textContent='⭐ '+fa(S.score)+(S.streak>1?'  🔥'+fa(S.streak):'')}
+function rocket(p){$('rocket').style.setProperty('--p',p)}
+function start(){
+  const v=document.querySelector('input[name=t]:checked').value;
+  Object.assign(S,{topics:v=='all'?Object.keys(U):[v],n:0,lives:3,score:0,streak:0,right:0,lock:0});
+  rocket(0);show('play');nextQ();
+}
+function nextQ(){
+  if(S.n>=N||S.lives<=0)return end();
+  S.lock=0;S.q=makeQ(S.topics);hud();
+  $('qtopic').textContent=NM[S.q.topic];$('qtext').textContent=S.q.text;
+  $('qnum').textContent='سؤال '+fa(S.n+1)+' از '+fa(N);
+  const o=$('opts');o.innerHTML='';
+  S.q.opts.forEach(x=>{const b=document.createElement('button');b.className='btn opt';b.textContent=x;b.onclick=()=>answer(b,x);o.append(b)});
+  $('fb').hidden=true;$('next').hidden=true;
+}
+function burst(el){const r=el.getBoundingClientRect();for(let i=0;i<10;i++){const s=document.createElement('span');s.className='pf';s.textContent=pick(['⭐','🎉','✨','🌟']);s.style.left=(r.left+rnd(0,r.width))+'px';s.style.top=(r.top+rnd(0,r.height))+'px';document.body.append(s);setTimeout(()=>s.remove(),1000)}}
+function answer(btn,x){
+  if(S.lock)return;S.lock=1;S.n++;
+  const ok=x===S.q.right;
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent===S.q.right)b.classList.add('ok');else if(b===btn)b.classList.add('no')});
+  const fb=$('fb');fb.hidden=false;
+  if(ok){S.right++;S.score+=10+Math.min(S.streak,5)*2;S.streak++;burst(btn);fb.textContent=pick(['🎉 آفرین!','🌟 عالی بود!','🚀 درست گفتی!'])+' '+S.q.ex}
+  else{S.lives--;S.streak=0;fb.textContent='💡 جواب درست: '+S.q.right+'. '+S.q.ex}
+  hud();rocket(S.n/N);
+  const nx=$('next');nx.hidden=false;nx.textContent=(S.n>=N||S.lives<=0)?'ببین چقدر پیش رفتی':'سؤال بعد';nx.focus();
+}
+function end(){
+  show('end');
+  const lost=S.lives<=0,st=lost?0:(S.right>=9?3:S.right>=6?2:1);
+  $('eemoji').textContent=lost?'🛟':(st==3?'🪐🏆':'🪐');
+  $('etitle').textContent=lost?'سوخت موشک تمام شد!':(st==3?'فرمانده‌ی اعداد مرکب!':st==2?'فضانورد ماهر!':'فضانورد تازه‌کار!');
+  $('estars').textContent='⭐'.repeat(st)+'☆'.repeat(3-st);
+  $('emsg').textContent=lost?'اشکالی ندارد؛ فضانوردهای بزرگ هم چند بار تلاش می‌کنند. دوباره پرواز کن!':(st==3?'همه‌ی تبدیل‌ها و جمع و تفریق‌ها را درست انجام دادی.':'با کمی تمرین بیشتر به ستاره‌ی سوم می‌رسی.');
+  $('estat').textContent=fa(S.right)+' جواب درست از '+fa(S.n)+' سؤال · '+fa(S.score)+' امتیاز';
+}
+$('go').onclick=start;$('again').onclick=()=>show('start');$('next').onclick=nextQ;
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>بازی میلیارد | ریاضی پنجم</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7e6;--card:#ffffff;--ink:#2b2a33;--mut:#6b6a75;--pri:#ff7a1a;--ok:#1fa35c;--bad:#e5484d;--line:#f0dcc0;--hi:#fff0d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a24;--card:#2a2735;--ink:#f4f1fa;--mut:#aaa6b8;--line:#413d52;--hi:#3a3350;color-scheme:dark}}
+html{height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Vazirmatn',Tahoma,sans-serif;display:flex;justify-content:center}
+.app{width:100%;max-width:560px;padding:16px}
+h1{font-size:1.5rem;margin:8px 0;text-align:center}
+.sub{text-align:center;color:var(--mut);margin:0 0 14px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:700}
+.prog{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.prog i{display:block;height:100%;background:var(--pri);width:0;transition:width .3s}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px}
+.q{font-size:1.1rem;font-weight:700;line-height:1.9;margin:0 0 12px}
+.num{direction:ltr;text-align:center;font-size:1.7rem;font-weight:800;background:var(--hi);border-radius:12px;padding:10px;margin:8px 0 14px;letter-spacing:1px;word-break:break-all}
+.num b{color:var(--pri);text-decoration:underline}
+.words{background:var(--hi);border-radius:12px;padding:12px;font-weight:700;line-height:1.9;margin-bottom:12px}
+.opts{display:grid;gap:10px}
+button{font-family:inherit;font-size:1.05rem;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:12px;cursor:pointer}
+button.o{direction:ltr;font-weight:700}
+button.o.t{direction:rtl}
+button:hover:not(:disabled){border-color:var(--pri)}
+button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+button.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.go{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:800;width:100%;margin-top:12px}
+.fb{min-height:1.8em;margin-top:10px;font-weight:700}
+.tip{font-size:.95rem;color:var(--mut);font-weight:400}
+.big{font-size:3rem;text-align:center;margin:6px 0}
+.cl{text-align:center;margin:10px 0 0;color:var(--mut);font-size:.9rem}
+.table{direction:ltr;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;font-size:.85rem;margin-bottom:12px}
+.table div{background:var(--hi);border-radius:8px;padding:6px 2px}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+var D='۰۱۲۳۴۵۶۷۸۹';
+function fa(s){return String(s).replace(/\d/g,function(d){return D[d]})}
+function fmt(n){return fa(String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','))}
+function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=R(0,i);var t=a[i];a[i]=a[j];a[j]=t}return a}
+var O=['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'],
+T=['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'],
+X=['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'],
+H=['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+function w3(n){var p=[],h=Math.floor(n/100),r=n%100;if(h)p.push(H[h]);if(r>=10&&r<20)p.push(T[r-10]);else{if(r>=20)p.push(X[Math.floor(r/10)]);if(r%10)p.push(O[r%10])}return p.join(' و ')}
+function words(n){var g=[[1e9,'میلیارد'],[1e6,'میلیون'],[1e3,'هزار'],[1,'']],p=[];g.forEach(function(x){var c=Math.floor(n/x[0])%1000;if(c){p.push(w3(c)+(x[1]?' '+x[1]:''))}});return p.join(' و ')}
+function genNum(){var b=R(1,9),m=R(0,999),t=R(0,999),r=R(0,999);if(Math.random()<.4)m=0;if(Math.random()<.4)t=0;if(Math.random()<.3)r=0;if(!m&&!t&&!r)r=R(1,999);return b*1e9+m*1e6+t*1e3+r}
+var FACTS=[
+{q:'هزار میلیون برابر است با:',a:'یک میلیارد',w:['صد میلیارد','ده میلیارد','یک میلیون']},
+{q:'عدد بعد از ۹۹۹٬۹۹۹٬۹۹۹ کدام است؟',a:'۱٬۰۰۰٬۰۰۰٬۰۰۰ (یک میلیارد)',w:['۱۰٬۰۰۰٬۰۰۰ (ده میلیون)','۱٬۰۰۰٬۰۰۰ (یک میلیون)','۱۰۰٬۰۰۰٬۰۰۰ (صد میلیون)']},
+{q:'عدد یک میلیارد چند صفر دارد؟',a:'۹ صفر',w:['۶ صفر','۸ صفر','۱۰ صفر']},
+{q:'ده برابر صد میلیون چند است؟',a:'یک میلیارد',w:['ده میلیارد','ده میلیون','هزار میلیارد']},
+{q:'عدد یک میلیارد چند رقم دارد؟',a:'۱۰ رقم',w:['۹ رقم','۱۱ رقم','۸ رقم']},
+{q:'کدام عدد از همه بزرگ‌تر است؟',a:'نهصد و نود و نه میلیون',w:['صد میلیون','پانصد میلیون','هشتصد میلیون'],note:'همه‌ی آن‌ها از یک میلیارد کوچک‌ترند.'},
+{q:'یک میلیارد چند تا «صد میلیون» است؟',a:'۱۰ تا',w:['۱۰۰ تا','۱ تا','۱٬۰۰۰ تا']}
+];
+function qRead(){var n=genNum(),o=[n],tries=0,s=String(n);
+while(o.length<4&&tries++<50){var m=Math.random(),c;if(m<.35)c=n*10;else if(m<.6)c=Math.floor(n/10);else{var i=R(0,s.length-1),d=String(R(i?0:1,9));c=Number(s.slice(0,i)+d+s.slice(i+1))}if(c>=1e8&&o.indexOf(c)<0)o.push(c)}
+while(o.length<4){var c2=n+R(1,9)*1e6;if(o.indexOf(c2)<0)o.push(c2)}
+return{k:'read',q:'عدد زیر را به رقم بنویس:',words:words(n),opts:shuffle(o.map(function(x){return{t:fmt(x),v:x}})),ans:n,tip:fmt(n)+' = '+words(n)}}
+function qPlace(){var n=genNum(),s=String(n),idx=[];for(var i=0;i<s.length;i++)if(s[i]!=='0')idx.push(i);var i2=idx[R(0,idx.length-1)],d=Number(s[i2]),k=s.length-1-i2,val=d*Math.pow(10,k),o=[val],t=0;
+while(o.length<4&&t++<50){var j=R(0,9),c=d*Math.pow(10,j);if(o.indexOf(c)<0)o.push(c)}
+var hl=fmt(n).split(''),pos=0,out='',cnt=0;for(var a=0;a<hl.length;a++){var ch=hl[a];if(ch===','){out+=ch;continue}if(cnt===i2)out+='<b>'+ch+'</b>';else out+=ch;cnt++}
+return{k:'place',q:'ارزش رقم زیرخط‌دار در این عدد چقدر است؟',numHtml:out,opts:shuffle(o.map(function(x){return{t:fmt(x)+' ('+words(x)+')',v:x,rtl:1}})),ans:val,tip:'این رقم در مرتبه‌ی '+fa(k+1)+'‌ام است؛ پس ارزشش '+fmt(val)+' می‌شود.'}}
+function qComp(){var a=genNum(),b=a;while(b===a){var s=String(a),i=R(0,s.length-1);b=Number(s.slice(0,i)+R(i?0:1,9)+s.slice(i+1))}
+if(R(0,1)){var t=a;a=b;b=t}
+return{k:'comp',q:'کدام عدد بزرگ‌تر است؟',opts:[{t:fmt(a),v:a},{t:fmt(b),v:b}],ans:Math.max(a,b),tip:'ابتدا تعداد رقم‌ها، بعد رقم‌ها را از چپ به راست مقایسه کن.'}}
+function qFact(){var f=FACTS[R(0,FACTS.length-1)];return{k:'fact',q:f.q,opts:shuffle([f.a].concat(f.w).map(function(x){return{t:x,v:x,rtl:1}})),ans:f.a,tip:f.note||''}}
+var st,app=document.getElementById('app');
+function start(){var types=shuffle([qRead,qRead,qRead,qPlace,qPlace,qPlace,qComp,qComp,qFact,qFact]);st={qs:types.map(function(f){return f()}),i:0,lives:3,score:0,streak:0,best:0};showQ()}
+function home(){app.innerHTML='<h1>🏆 ماجراجویی میلیارد</h1><p class="sub">ریاضی پنجم ابتدایی<br><b>آموزگار: سمیه مهری</b></p><div class="card"><div class="big">🔢💰🚀</div><p class="q">۱۰ سؤال درباره‌ی خواندن، نوشتن، ارزش مکانی و مقایسه‌ی عددهای میلیاردی. سه جان داری ❤️❤️❤️ — هر جواب غلط یک جان کم می‌کند!</p><div class="table"><div>یکان<br>۱</div><div>هزار<br>۱٬۰۰۰</div><div>میلیون<br>۱٬۰۰۰٬۰۰۰</div><div>میلیارد<br>۱٬۰۰۰٬۰۰۰٬۰۰۰</div></div><button class="go" onclick="start()">شروع بازی</button></div><p class="cl">آموزگار: سمیه مهری</p>'}
+function showQ(){var q=st.qs[st.i],h='';
+h+='<div class="bar"><span>سؤال '+fa(st.i+1)+' از '+fa(10)+'</span><span>'+'❤️'.repeat(st.lives)+'🖤'.repeat(3-st.lives)+'</span><span>⭐ '+fa(st.score)+'</span></div><div class="prog"><i style="width:'+(st.i*10)+'%"></i></div><div class="card"><p class="q">'+q.q+'</p>';
+if(q.words)h+='<div class="words">'+q.words+'</div>';
+if(q.numHtml)h+='<div class="num">'+q.numHtml+'</div>';
+h+='<div class="opts">';
+q.opts.forEach(function(o,j){h+='<button class="o'+(o.rtl?' t':'')+'" data-j="'+j+'">'+o.t+'</button>'});
+h+='</div><div class="fb" id="fb"></div></div>';
+app.innerHTML=h;
+app.querySelectorAll('.o').forEach(function(b){b.onclick=function(){pick(Number(b.dataset.j))}})}
+function pick(j){var q=st.qs[st.i],bs=app.querySelectorAll('.o'),fb=document.getElementById('fb'),ok=q.opts[j].v===q.ans;
+bs.forEach(function(b,x){b.disabled=true;if(q.opts[x].v===q.ans)b.classList.add('ok')});
+if(ok){st.score+=10+(st.streak>=2?5:0);st.streak++;st.best=Math.max(st.best,st.streak);fb.innerHTML='🎉 آفرین! درست بود'+(st.streak>=3?' — '+fa(st.streak)+' پشت‌سرهم 🔥':'')+(q.tip?'<div class="tip">'+q.tip+'</div>':'')}
+else{bs[j].classList.add('bad');st.lives--;st.streak=0;fb.innerHTML='😅 نزدیک بود! جواب درست با رنگ سبز مشخص شد.'+(q.tip?'<div class="tip">'+q.tip+'</div>':'')}
+var last=st.i===9||st.lives===0,b=document.createElement('button');b.className='go';b.textContent=last?'دیدن نتیجه':'سؤال بعدی';b.onclick=function(){if(last)end();else{st.i++;showQ()}};
+document.querySelector('.card').appendChild(b)}
+function end(){var done=st.lives>0,ans=st.i+(done?1:0),stars=st.score>=100?3:st.score>=60?2:1,m=done?(stars===3?'نابغه‌ی میلیارد! 🏅':stars===2?'عالی بود! ادامه بده 💪':'خوب بود! یک بار دیگر تمرین کن 🌱'):'جان‌هایت تمام شد، اما تمرین استاد می‌سازد! 🌟';
+app.innerHTML='<h1>'+m+'</h1><div class="card"><div class="big">'+'⭐'.repeat(stars)+'</div><p class="q" style="text-align:center">امتیاز: '+fa(st.score)+'<br>بیشترین جواب درست پشت‌سرهم: '+fa(st.best)+'</p><button class="go" onclick="start()">بازی دوباره</button><button class="go" style="background:transparent;color:var(--ink);border-color:var(--line)" onclick="home()">صفحه‌ی اصلی</button></div><p class="cl">آموزگار: سمیه مهری</p>'}
+home();
+</script>
+</body>
+</html>

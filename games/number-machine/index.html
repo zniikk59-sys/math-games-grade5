@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ماشین عددنویس | ریاضی پنجم</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7e6;--card:#ffffff;--ink:#2b2340;--mute:#7a7090;--pri:#6c4cf1;--ok:#1fa971;--bad:#e5484d;--line:#e6dff5;--hl:#ffd23f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1630;--card:#2a2347;--ink:#f3efff;--mute:#b3a9d1;--pri:#9a82ff;--ok:#3ddc97;--bad:#ff6b70;--line:#40376a;--hl:#ffd23f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1630;--card:#2a2347;--ink:#f3efff;--mute:#b3a9d1;--pri:#9a82ff;--ok:#3ddc97;--bad:#ff6b70;--line:#40376a;--hl:#ffd23f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;min-height:100vh}
+#app{max-width:640px;margin:0 auto;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 14px}
+.bar{height:12px;background:var(--line);border-radius:9px;margin:12px 0;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ff8a3d,#ffd23f);transition:width .4s}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;text-align:center;box-shadow:0 6px 0 var(--line)}
+.tag{display:inline-block;background:var(--pri);color:#fff;border-radius:999px;padding:3px 14px;font-size:14px;margin-bottom:10px}
+h1{margin:6px 0;font-size:28px}
+.q{font-size:18px;color:var(--mute);margin:4px 0 10px}
+.big{font-size:26px;font-weight:900;line-height:1.8;direction:rtl}
+.num{font-size:34px;font-weight:900;letter-spacing:1px;direction:ltr;display:block;word-break:break-all}
+.num b{background:var(--hl);color:#2b2340;border-radius:8px;padding:0 6px}
+input{width:100%;font:inherit;font-size:28px;text-align:center;direction:ltr;margin-top:14px;padding:10px;border-radius:14px;border:3px solid var(--line);background:var(--bg);color:var(--ink)}
+input:focus{outline:none;border-color:var(--pri)}
+.opts{display:grid;gap:10px;margin-top:14px}
+.btn{font:inherit;font-weight:700;font-size:18px;border:0;border-radius:16px;padding:12px 16px;cursor:pointer;background:var(--pri);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.25);margin-top:14px}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.opt{background:var(--bg);color:var(--ink);border:3px solid var(--line);box-shadow:none;margin:0;font-size:20px}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 22%,var(--card))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 22%,var(--card))}
+.fb{min-height:60px;margin-top:12px;font-weight:700;font-size:18px}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.stars{font-size:46px;margin:8px 0}
+.hint{color:var(--mute);font-size:14px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const $=s=>document.querySelector(s);
+const rand=n=>Math.floor(Math.random()*n);
+const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const fa=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const sep=s=>s.replace(/\B(?=(\d{3})+(?!\d))/g,'٬');
+const fmt=n=>fa(sep(String(n)));
+const norm=s=>s.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,'');
+const O=['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه','ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
+const T=['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+const H=['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+const S=['','هزار','میلیون','میلیارد'];
+function w3(n){const p=[],h=Math.floor(n/100),r=n%100;if(h)p.push(H[h]);if(r<20){if(r)p.push(O[r])}else{p.push(T[Math.floor(r/10)]);if(r%10)p.push(O[r%10])}return p.join(' و ')}
+function words(n){if(n===0)return 'صفر';const p=[];let i=0;while(n>0){const g=n%1000;if(g)p.unshift(w3(g)+(S[i]?' '+S[i]:''));n=Math.floor(n/1000);i++}return p.join(' و ')}
+function genNum(i){const len=i<3?4+rand(2):i<6?6+rand(2):8+rand(3);let s=String(1+rand(9));for(let k=1;k<len;k++)s+=Math.random()<.28?'0':String(rand(10));return Number(s)}
+function distract(n){const s=String(n),out=new Set();let t=0;while(out.size<3&&t++<200){let a=s.split(''),r=rand(3);const i=rand(s.length-1);
+ if(r==0){[a[i],a[i+1]]=[a[i+1],a[i]]}else if(r==1){a[1+rand(s.length-1)]=String(rand(10))}else{a.splice(1+rand(s.length-1),0,'0')}
+ if(a[0]==='0')continue;const v=Number(a.join(''));if(v!==n)out.add(v)}return [...out]}
+const TYPES=['A','B','C','A','B','C','A','B','C','A'];
+let st;
+function start(){st={i:0,score:0,lives:3,streak:0,best:0,done:false};ask()}
+function head(){return `<div class="top"><span class="pill">❤️ ${fa(st.lives)}</span><span class="pill">⭐ ${fa(st.score)}</span><span class="pill">🔥 ${fa(st.streak)}</span></div><div class="bar"><i style="width:${st.i*10}%"></i></div>`}
+function home(){$('#app').innerHTML=`<div class="card"><div class="stars">🔢🏭</div><h1>ماشین عددنویس</h1><p class="q">ریاضی پنجم · عددنویسی</p><p class="hint" style="font-size:16px;font-weight:700">آموزگار: سمیه مهری 🌷</p><p>ماشین عددنویس خراب شده! با نوشتن درست عددها، ماشین را تعمیر کن. ۱۰ مرحله داری و ۳ جان ❤️</p><button class="btn" onclick="start()">شروع بازی 🚀</button></div>`}
+function ask(){
+ const i=st.i,type=TYPES[i],n=genNum(i);let q={type,n};st.q=q;let body='';
+ if(type==='A'){body=`<span class="tag">عدد را با رقم بنویس</span><div class="big">${words(n)}</div><input id="in" inputmode="numeric" autocomplete="off" placeholder="…"><div class="hint">بدون ویرگول و فاصله بنویس</div><div class="fb" id="fb"></div><button class="btn" id="go" onclick="checkA()">بررسی ✅</button>`}
+ if(type==='B'){q.ans=words(n);q.opts=shuf([n,...distract(n)]).map(words);body=`<span class="tag">عدد را با حروف بخوان</span><span class="num">${fmt(n)}</span><div class="opts">${q.opts.map((o,k)=>`<button class="btn opt" onclick="pick(${k})">${o}</button>`).join('')}</div><div class="fb" id="fb"></div>`}
+ if(type==='C'){const s=String(n),idx=[...s].map((d,k)=>d!=='0'?k:-1).filter(k=>k>=0),k=idx[rand(idx.length)],d=+s[k],p=s.length-1-k;q.val=d*10**p;
+  let o=new Set([q.val]);[d*10**(p+1),d*10**Math.max(p-1,0),d,d*10**(p+2),d*10**(p-2<0?0:p-2)].forEach(v=>{if(o.size<4&&!o.has(v))o.add(v)});
+  q.opts=shuf([...o]);let shown='';for(let j=0;j<s.length;j++){if(j>0&&(s.length-j)%3===0)shown+='٬';shown+=j===k?`<b>${fa(s[j])}</b>`:fa(s[j])}
+  body=`<span class="tag">ارزش مکانی</span><span class="num">${shown}</span><div class="q">ارزش رقم رنگی چقدر است؟</div><div class="opts">${q.opts.map((o,j)=>`<button class="btn opt" onclick="pickC(${j})">${fmt(o)}</button>`).join('')}</div><div class="fb" id="fb"></div>`}
+ $('#app').innerHTML=head()+`<div class="card">${body}</div>`;
+ const inp=$('#in');if(inp){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#go').click()})}
+}
+function result(ok,msg){
+ const fb=$('#fb');fb.className='fb '+(ok?'ok':'no');
+ if(ok){st.streak++;st.score+=10+Math.min(st.streak,5)*2;fb.textContent=['آفرین! 🎉','عالی بود! 🌟','دقیقاً درسته! 👏','تو یک نابغه‌ای! 🚀'][rand(4)]}
+ else{st.streak=0;st.lives--;fb.innerHTML='نه‌چندان درست 😅 '+msg}
+ document.querySelectorAll('.opt,#go,#in').forEach(e=>e.disabled=true);
+ const last=st.i===9||st.lives===0;const b=document.createElement('button');b.className='btn';b.textContent=last?'دیدن نتیجه 🏆':'مرحله بعد ➡️';b.onclick=()=>{st.i++;last?end():ask()};$('.card').appendChild(b);b.focus();
+ document.querySelector('.top').innerHTML=`<span class="pill">❤️ ${fa(st.lives)}</span><span class="pill">⭐ ${fa(st.score)}</span><span class="pill">🔥 ${fa(st.streak)}</span>`;
+}
+function checkA(){const v=norm($('#in').value);if(!v)return;const ok=Number(v)===st.q.n;result(ok,`پاسخ درست: <b>${fmt(st.q.n)}</b>`)}
+function pick(k){const ok=st.q.opts[k]===st.q.ans;document.querySelectorAll('.opt').forEach((e,j)=>{if(st.q.opts[j]===st.q.ans)e.classList.add('ok');else if(j===k)e.classList.add('no')});result(ok,'گزینهٔ سبز درست است.')}
+function pickC(k){const ok=st.q.opts[k]===st.q.val;document.querySelectorAll('.opt').forEach((e,j)=>{if(st.q.opts[j]===st.q.val)e.classList.add('ok');else if(j===k)e.classList.add('no')});result(ok,'ارزش درست: '+fmt(st.q.val))}
+function end(){const win=st.lives>0,stars=!win?1:st.score>=140?3:st.score>=100?2:1;
+ $('#app').innerHTML=`<div class="card"><div class="stars">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div><h1>${win?'ماشین تعمیر شد! 🎊':'جان‌هایت تمام شد 💔'}</h1><p class="q">امتیاز تو: ${fa(st.score)}</p><p>${win?'تو استاد عددنویسی هستی!':'اشکالی ندارد، دوباره امتحان کن!'}</p><button class="btn" onclick="start()">بازی دوباره 🔁</button><p class="hint">آموزگار: سمیه مهری 🌷</p></div>`}
+home();
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ماجراجویی الگویابی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fff4d6;--bg2:#d9f0ff;--card:#fff;--ink:#23304a;--mute:#6b7690;--acc:#ff7a3d;--acc2:#2f80ed;--ok:#2bb673;--bad:#e5484d;--box:#eef3ff;--line:#cfd9f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#1c2238;--bg2:#13263d;--card:#222b45;--ink:#f1f4ff;--mute:#a4aecb;--box:#2b3656;--line:#3d4a72}}
+:root[data-theme="dark"]{--bg1:#1c2238;--bg2:#13263d;--card:#222b45;--ink:#f1f4ff;--mute:#a4aecb;--box:#2b3656;--line:#3d4a72}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;font-family:'Vazirmatn',Tahoma,system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2));background-color:var(--bg2);display:flex;justify-content:center;padding:16px}
+.app{width:100%;max-width:560px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px}
+.pill{background:var(--card);border-radius:20px;padding:4px 14px;box-shadow:0 2px 6px #0002}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),#ffc53d);transition:width .4s}
+.card{background:var(--card);border-radius:22px;padding:18px;box-shadow:0 8px 24px #0002;text-align:center}
+h1{margin:6px 0;font-size:28px}
+.owl{font-size:56px;line-height:1}
+.q{font-size:19px;font-weight:700;margin:6px 0 12px}
+.vis{overflow-x:auto;padding:6px 0 10px;direction:ltr}
+.seq{display:inline-flex;gap:8px;direction:ltr;align-items:center}
+.seq span{min-width:46px;height:46px;border-radius:12px;background:var(--box);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;padding:0 6px}
+.seq span.q2{background:var(--acc);color:#fff;border-color:var(--acc)}
+.seq b{color:var(--mute)}
+.figs{display:flex;gap:14px;justify-content:center;direction:ltr;flex-wrap:wrap}
+.fig{background:var(--box);border-radius:14px;padding:8px 10px;font-size:13px;color:var(--mute)}
+.fig svg{display:block;margin:0 auto 4px}
+.tbl{direction:ltr;border-collapse:collapse;margin:auto}
+.tbl td{border:2px solid var(--line);padding:6px 14px;font-weight:700;font-size:18px}
+.tbl tr:first-child td{background:var(--box)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.opt{font:inherit;font-size:22px;font-weight:900;padding:12px;border-radius:16px;border:3px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:transform .1s}
+.opt:hover:not(:disabled){transform:scale(1.04);border-color:var(--acc2)}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn{font:inherit;font-weight:700;font-size:17px;border:0;border-radius:14px;padding:10px 22px;background:var(--acc2);color:#fff;cursor:pointer;margin-top:12px}
+.btn.alt{background:transparent;color:var(--acc2);border:2px solid var(--acc2)}
+.msg{min-height:48px;margin-top:10px;font-weight:700;line-height:1.8}
+.msg.ok{color:var(--ok)}.msg.no{color:var(--bad)}.msg.h{color:var(--mute)}
+.stars{font-size:44px;letter-spacing:6px}
+.pop{animation:pop .4s}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+var fa=function(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d]})};
+var R=function(a,b){return a+Math.floor(Math.random()*(b-a+1))};
+var shuf=function(a){return a.sort(function(){return Math.random()-.5})};
+function opts(ans,step){var s=new Set([ans]),t=0;while(s.size<4&&t++<99){var v=ans+R(-3,3)*step;if(v>0)s.add(v)}var k=1;while(s.size<4)s.add(ans+(k++)*step);return shuf(Array.from(s))}
+function seq(a,blank){return '<div class="vis"><div class="seq">'+a.map(function(x,i){return '<span'+(i===blank?' class="q2">؟':'>'+fa(x))+'</span>'}).join('')+'</div></div>'}
+function sqFig(k){var s=12,g=5,w=k*(s+g),c='';for(var i=0;i<k;i++)for(var j=0;j<k;j++)c+='<circle cx="'+(j*(s+g)+(s+g)/2)+'" cy="'+(i*(s+g)+(s+g)/2)+'" r="6" fill="#ff7a3d"/>';return '<div class="fig"><svg width="'+w+'" height="'+w+'">'+c+'</svg>شکل '+fa(k)+'</div>'}
+function triFig(k){var s=12,g=5,u=s+g,w=k*u,c='';for(var i=0;i<k;i++)for(var j=0;j<=i;j++)c+='<circle cx="'+((w-(i+1)*u)/2+j*u+u/2)+'" cy="'+(i*u+u/2)+'" r="6" fill="#2f80ed"/>';return '<div class="fig"><svg width="'+w+'" height="'+w+'">'+c+'</svg>شکل '+fa(k)+'</div>'}
+function stickFig(n){var w=n*24+4,c='';for(var i=0;i<n;i++)c+='<rect x="'+(2+i*24)+'" y="2" width="24" height="24" fill="none" stroke="#e5484d" stroke-width="4" stroke-linejoin="round"/>';return '<div class="fig"><svg width="'+w+'" height="28">'+c+'</svg>شکل '+fa(n)+'</div>'}
+var G={
+add:function(){var a=R(2,12),d=R(2,9),x=[0,1,2,3,4].map(function(i){return a+i*d}),r=a+5*d;return{q:'عدد بعدی در این الگو چیست؟',vis:seq(x.concat([0]),5),ans:r,o:opts(r,d),hint:'تفاضل دو عدد کنار هم را حساب کن.',why:'هر بار '+fa(d)+' تا اضافه می‌شود؛ پس '+fa(x[4])+' + '+fa(d)+' = '+fa(r)}},
+sub:function(){var d=R(2,8),a=R(50,90),x=[0,1,2,3,4].map(function(i){return a-i*d}),r=a-5*d;return{q:'عدد بعدی در این الگو چیست؟',vis:seq(x.concat([0]),5),ans:r,o:opts(r,d),hint:'اعداد دارند کم می‌شوند!',why:'هر بار '+fa(d)+' تا کم می‌شود؛ پس '+fa(x[4])+' − '+fa(d)+' = '+fa(r)}},
+mul:function(){var m=R(2,3),a=R(1,3),x=[0,1,2,3].map(function(i){return a*Math.pow(m,i)}),r=a*Math.pow(m,4);return{q:'عدد بعدی در این الگو چیست؟',vis:seq(x.concat([0]),4),ans:r,o:opts(r,m*2),hint:'این بار جمع نیست؛ ضرب است!',why:'هر عدد '+fa(m)+' برابر عدد قبلی است؛ پس '+fa(x[3])+' × '+fa(m)+' = '+fa(r)}},
+mid:function(){var a=R(3,15),d=R(3,9),b=R(1,3),x=[0,1,2,3,4,5].map(function(i){return a+i*d}),r=x[b+1];return{q:'جای خالی را پیدا کن.',vis:seq(x,b+1),ans:r,o:opts(r,d),hint:'از عدد قبل و بعد کمک بگیر.',why:'اختلاف عددها '+fa(d)+' است؛ '+fa(x[b])+' + '+fa(d)+' = '+fa(r)}},
+sq:function(){var k=R(5,7);return{q:'در شکل '+fa(k)+' چند نقطه وجود دارد؟',vis:'<div class="figs">'+sqFig(1)+sqFig(2)+sqFig(3)+sqFig(4)+'</div>',ans:k*k,o:opts(k*k,k),hint:'تعداد نقطه‌ها: ۱، ۴، ۹، ۱۶ ... هر شکل مربع است!',why:'الگوی مربعی: شکل '+fa(k)+' برابر است با '+fa(k)+' × '+fa(k)+' = '+fa(k*k)}},
+tri:function(){var k=R(5,7),r=k*(k+1)/2;return{q:'در شکل '+fa(k)+' چند نقطه وجود دارد؟',vis:'<div class="figs">'+triFig(1)+triFig(2)+triFig(3)+triFig(4)+'</div>',ans:r,o:opts(r,k-2),hint:'هر بار یک ردیف بیشتر اضافه می‌شود: ۱+۲+۳ ...',why:'الگوی مثلثی: ۱ + ۲ + ... + '+fa(k)+' = '+fa(r)}},
+stick:function(){var n=R(5,8),r=3*n+1;return{q:'برای ساختن شکل '+fa(n)+' چند چوب‌کبریت لازم است؟',vis:'<div class="figs">'+stickFig(1)+stickFig(2)+stickFig(3)+'</div><div class="seq" style="margin-top:6px"><span>۴</span><span>۷</span><span>۱۰</span></div>',ans:r,o:opts(r,3),hint:'تعداد چوب‌کبریت‌ها هر بار چند تا زیاد می‌شود؟',why:'هر شکل ۳ چوب بیشتر دارد. قانون: (شماره شکل × ۳) + ۱ = '+fa(r)}},
+tbl:function(){var a=R(2,6),b=R(0,2),n=R(7,10),r=a*n+b,t=function(f){return[1,2,3].map(f).map(function(v){return '<td>'+v+'</td>'}).join('')};return{q:'شکل '+fa(n)+' چند تا دارد؟',vis:'<div class="vis"><table class="tbl"><tr><td>شماره شکل</td>'+t(function(i){return fa(i)})+'<td>'+fa(n)+'</td></tr><tr><td>تعداد</td>'+t(function(i){return fa(a*i+b)})+'<td>؟</td></tr></table></div>',ans:r,o:opts(r,a),hint:'قانون الگو را از روی جدول پیدا کن.',why:'قانون: شماره شکل × '+fa(a)+(b?' + '+fa(b):'')+'؛ پس '+fa(n)+' × '+fa(a)+(b?' + '+fa(b):'')+' = '+fa(r)}},
+rep:function(){var E=shuf(['🍎','🍌','🍇','🍓','⭐','🌙','🔷','🔺']),p=R(2,3),pat=E.slice(0,p),t=R(10,13),x=[];for(var i=0;i<7;i++)x.push(pat[i%p]);var r=pat[(t-1)%p];return{q:'چه شکلی در جایگاه '+fa(t)+' قرار می‌گیرد؟',vis:'<div class="vis"><div class="seq">'+x.map(function(e){return '<span>'+e+'</span>'}).join('')+'<b>…</b></div></div>',ans:r,o:shuf(E.slice(0,4)),hint:'ببین الگو بعد از چند شکل دوباره تکرار می‌شود.',why:'الگو هر '+fa(p)+' شکل تکرار می‌شود. باقی‌مانده '+fa(t)+' ÷ '+fa(p)+' را بررسی کن.'}}
+};
+var ORDER=['add','rep','sub','sq','mid','tri','mul','stick','tbl','tri'];
+var S={i:0,score:0,ok:0,streak:0,q:null,hint:false,done:false};
+var app=document.getElementById('app');
+function hdr(){return '<div class="top"><span class="pill">⭐ '+fa(S.score)+'</span><span class="pill">'+fa(Math.min(S.i+1,10))+' از '+fa(10)+'</span></div><div class="bar"><i style="width:'+(S.i*10)+'%"></i></div>'}
+function start(){S={i:0,score:0,ok:0,streak:0,q:null,hint:false,done:false};app.innerHTML='<div class="card pop"><div class="owl">🦉</div><h1>ماجراجویی الگویابی</h1><div style="color:var(--acc);font-weight:700;margin-bottom:6px">👩‍🏫 آموزگار: سمیه مهری</div><p style="line-height:2">من جغد باهوش هستم! با من ۱۰ الگو را حل کن:<br>عددی، مربعی، مثلثی و شکلی.</p><button class="btn" onclick="next()">شروع بازی 🚀</button></div>'}
+function next(){if(S.i>=10)return end();S.q=G[ORDER[S.i]]();S.hint=false;S.done=false;var q=S.q;app.innerHTML=hdr()+'<div class="card pop"><div class="owl">🦉</div><div class="q">'+q.q+'</div>'+q.vis+'<div class="opts">'+q.o.map(function(o,i){return '<button class="opt" data-i="'+i+'">'+(typeof o==='number'?fa(o):o)+'</button>'}).join('')+'</div><div class="msg" id="msg"></div><div><button class="btn alt" id="hb">💡 راهنما</button></div></div>';
+document.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){pick(+b.dataset.i)}});document.getElementById('hb').onclick=function(){S.hint=true;var m=document.getElementById('msg');m.className='msg h';m.textContent=S.q.hint}}
+function pick(i){if(S.done)return;S.done=true;var q=S.q,good=q.o[i]===q.ans,bs=document.querySelectorAll('.opt'),m=document.getElementById('msg');bs.forEach(function(b,j){b.disabled=true;if(q.o[j]===q.ans)b.classList.add('ok')});
+if(good){S.ok++;S.streak++;var p=S.hint?5:10;if(S.streak>=3)p+=5;S.score+=p;m.className='msg ok';m.innerHTML='🎉 آفرین! +'+fa(p)+' امتیاز'+(S.streak>=3?' (جایزه پشت‌سرهم 🔥)':'')+'<br>'+q.why}
+else{S.streak=0;bs[i].classList.add('no');m.className='msg no';m.innerHTML='😅 اشکال نداره! دوباره فکر کن.<br>'+q.why}
+S.i++;var b=document.createElement('button');b.className='btn';b.textContent=S.i>=10?'دیدن نتیجه 🏆':'سؤال بعدی ➜';b.onclick=next;m.parentNode.appendChild(b)}
+function end(){var st=S.ok>=9?3:S.ok>=6?2:1,t=S.ok>=9?'نابغه الگوها هستی! 🏆':S.ok>=6?'عالی بود! کم مانده نابغه شوی 👏':'تلاش خوبی بود! دوباره امتحان کن 💪';app.innerHTML='<div class="card pop"><div class="owl">🦉</div><h1>'+t+'</h1><div class="stars">'+'⭐'.repeat(st)+'☆'.repeat(3-st)+'</div><p style="line-height:2">'+fa(S.ok)+' پاسخ درست از '+fa(10)+'<br>امتیاز: '+fa(S.score)+'</p><div style="color:var(--mute);font-size:14px;margin-top:8px">👩‍🏫 آموزگار: سمیه مهری</div><button class="btn" onclick="start()">بازی دوباره 🔄</button></div>'}
+start();
+</script>
+</body>
+</html>
